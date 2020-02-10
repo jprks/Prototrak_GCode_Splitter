@@ -37,13 +37,16 @@ movefile(original_name,new_name);
 
 %% Constants
 n = 1000; % Max number of lines per file
+heading_size = 3; % Specify heading size (might not work perfectly, check it if you change it. This will be improved in future versions.)
+step = n-5; % Steps the step size for the array concatenator limits
+up_lim = step; % Upper limit of concatenation
+low_lim = 1; % Lower limit of concatenation
 
 %% Program
 A = readtable(new_name,'Delimiter','\t','ReadVariableNames',false); % Read the file text into the workspace
 B = table2array(A); % Convert table to array
 C = char(B); % Convert array to character vector
 C_Size = size(C); % Find size of array
-heading_size = 3; % Specify heading size (might not work perfectly, check it if you change it. This will be improved in future versions.)
 heading = C(1:heading_size,:); % Cut the heading off of the text file (this and the ending vector need to be put on each split file)
 ending = C(C_Size(1,1),:); % Cut the ending off the text file so only the body text remains
 C(1:3,:) = []; % Nullify the first three rows
@@ -51,10 +54,6 @@ C(C_Size(1,1)-heading_size,:) = []; % Nullify the last row (ending)
 C_Size = size(C); % Redefine the size of the matrix
 
 p = ceil(C_Size(1,1)/n); % The number of times the script needs to be split, ceiling value since it needs to be rounded up)
-
-step = n-5; % Steps the step size for the array concatenator limits
-up_lim = step; % Upper limit of concatenation
-low_lim = 1; % Lower limit of concatenation
 
 i = 1; % Initialize this as a loop counter
 final_index = C_Size(1,1); % Sets the ending criterion for the while loop
